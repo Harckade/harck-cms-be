@@ -1,0 +1,125 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy dotnet core project to Azure Function App - harckade-dev
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [closed]
+    branches:
+      - main    
+  workflow_dispatch:
+
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'
+  DOTNET_VERSION: '8.0.x'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup publish-profile and app-name env vriables
+        run: |
+          echo 'PUBLISH_ADMIN=${{secrets.PUBLISH_ADMIN}}' >> $GITHUB_ENV
+          echo 'PUBLISH_ARTICLES=${{secrets.PUBLISH_ARTICLES}}' >> $GITHUB_ENV
+          echo 'PUBLISH_JOURNAL=${{secrets.PUBLISH_JOURNAL}}' >> $GITHUB_ENV
+          echo 'PUBLISH_PRIVATE=${{secrets.PUBLISH_PRIVATE}}' >> $GITHUB_ENV
+          echo 'PUBLISH_CONTACT=${{secrets.PUBLISH_CONTACT}}' >> $GITHUB_ENV
+          echo 'PUBLISH_FILES=${{secrets.PUBLISH_FILES}}' >> $GITHUB_ENV
+          echo 'PUBLISH_SIGNALR=${{secrets.PUBLISH_SIGNALR}}' >> $GITHUB_ENV  
+          echo 'PUBLISH_PRIVATE_NEWSLETTER=${{secrets.PUBLISH_PRIVATE_NEWSLETTER}}' >> $GITHUB_ENV
+          echo 'PUBLISH_PUBLIC_NEWSLETTER=${{secrets.PUBLISH_PUBLIC_NEWSLETTER}}' >> $GITHUB_ENV
+          echo 'PUBLISH_NEWSLETTER=${{secrets.PUBLISH_NEWSLETTER}}' >> $GITHUB_ENV
+          echo "APP_NAME=harckade-" >> $GITHUB_ENV
+          
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v2
+
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: bash
+        run: |
+          FUNCTIONS=("Harckade.CMS.AdminController" "Harckade.CMS.PublicController.Articles" "Harckade.CMS.Journal" "Harckade.CMS.PrivateController" "Harckade.CMS.PublicController.Contact" "Harckade.CMS.PublicController.Files" "Harckade.CMS.SignalRController" "Harckade.CMS.PrivateController.Newsletter" "Harckade.CMS.PublicController.Newsletter" "Harckade.CMS.Newsletter")
+          for FUNCTION in "${FUNCTIONS[@]}"; do
+            pushd "./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/${FUNCTION}"
+            dotnet build --configuration Release --output ./output
+            popd
+            echo "Restored dependencies for Function ${FUNCTION}"
+          done
+      - name: 'Run Azure Functions Action for AdminController'
+        uses: Azure/functions-action@v1
+        id: fa-admin
+        with:
+          app-name: "${{ env.APP_NAME }}"
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Harckade.CMS.AdminController/output'
+          publish-profile: "${{ env.PUBLISH_ADMIN }}"
+      - name: 'Run Azure Functions Action for ArticlesController'
+        uses: Azure/functions-action@v1
+        id: fa-articles
+        with:
+          app-name: "${{ env.APP_NAME }}"
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Harckade.CMS.PublicController.Articles/output'
+          publish-profile: "${{ env.PUBLISH_ARTICLES }}"
+      - name: 'Run Azure Functions Action for Journal'
+        uses: Azure/functions-action@v1
+        id: fa-journal
+        with:
+          app-name: "${{ env.APP_NAME }}"
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Harckade.CMS.Journal/output'
+          publish-profile: "${{ env.PUBLISH_JOURNAL }}"
+      - name: 'Run Azure Functions Action for PrivateController'
+        uses: Azure/functions-action@v1
+        id: fa-private
+        with:
+          app-name: "${{ env.APP_NAME }}"
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Harckade.CMS.PrivateController/output'
+          publish-profile: "${{ env.PUBLISH_PRIVATE }}"
+      - name: 'Run Azure Functions Action for ContactController'
+        uses: Azure/functions-action@v1
+        id: fa-contact
+        with:
+          app-name: "${{ env.APP_NAME }}"
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Harckade.CMS.PublicController.Contact/output'
+          publish-profile: "${{ env.PUBLISH_CONTACT }}"
+      - name: 'Run Azure Functions Action for FilesController'
+        uses: Azure/functions-action@v1
+        id: fa-files
+        with:
+          app-name: "${{ env.APP_NAME }}"
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Harckade.CMS.PublicController.Files/output'
+          publish-profile: "${{ env.PUBLISH_FILES }}"
+      - name: 'Run Azure Functions Action for SignalRController'
+        uses: Azure/functions-action@v1
+        id: fa-signalr
+        with:
+          app-name: "${{ env.APP_NAME }}"
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Harckade.CMS.SignalRController/output'
+          publish-profile: "${{ env.PUBLISH_SIGNALR }}"
+      - name: 'Run Azure Functions Action for PrivateController.Newsletter'
+        uses: Azure/functions-action@v1
+        id: fa-private-newsletter
+        with:
+          app-name: "${{ env.APP_NAME }}"
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Harckade.CMS.PrivateController.Newsletter/output'
+          publish-profile: "${{ env.PUBLISH_PRIVATE_NEWSLETTER }}"
+      - name: 'Run Azure Functions Action for PublicController.Newsletter'
+        uses: Azure/functions-action@v1
+        id: fa-public-newsletter
+        with:
+          app-name: "${{ env.APP_NAME }}"
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Harckade.CMS.PublicController.Newsletter/output'
+          publish-profile: "${{ env.PUBLISH_PUBLIC_NEWSLETTER }}"
+      - name: 'Run Azure Functions Action for Newsletter'
+        uses: Azure/functions-action@v1
+        id: fa-newsletter
+        with:
+          app-name: "${{ env.APP_NAME }}"
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Harckade.CMS.Newsletter/output'
+          publish-profile: "${{ env.PUBLISH_NEWSLETTER }}"

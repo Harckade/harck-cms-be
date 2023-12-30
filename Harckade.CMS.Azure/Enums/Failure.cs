@@ -1,0 +1,32 @@
+﻿namespace Harckade.CMS.Azure.Enums
+{
+    public enum Failure
+    {
+        Default,
+        InvalidInput,
+        DuplicateArticleTitle,
+        UndefinedLanguage,
+        NotPossibleEditDeletedArticle,
+        NotMarkedAsDeleted,
+        ArticleNotFound,
+        BackupNotFound,
+        DeploymentLaunchFailed,
+        EmailWasNotSent,
+        EmailMessageIsEmpty,
+        EmailDestinataryIsNull,
+        EmailSubjectIsEmpty,
+        InvalidEmail,
+        AdministratorRequired,
+        UserNotFound,
+        UserAlreadyExists,
+        LanguageRequired,
+        FolderNotInitialized,
+        FolderNotFound,
+        InvalidStartDate,
+        InvalidEndDate,
+        NewsletterNotFound,
+        NewsletterAlreadySent,
+        UnsubscribeUrlIsMissing,
+        ConfirmationUrlIsMissing
+    }
+}
