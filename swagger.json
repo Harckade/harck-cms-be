@@ -1,0 +1,2364 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Azure Functions Backoffice",
+    "description": "This is the API for an entirely Azure Functions based CMS.",
+    "contact": {
+      "email": "contact@harckade.com"
+    },
+    "license": {
+      "name": "MIT License",
+      "url": "http://www.harckade.com/license"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "Find out more about this project",
+    "url": "https://github.com/Harckade/harck-cms-be"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:7071/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "cms | articles",
+      "description": "Private endpoint which require authorization"
+    },
+    {
+      "name": "cms | backups",
+      "description": "Private endpoint which require authorization"
+    },
+    {
+      "name": "cms | files",
+      "description": "Private endpoint which require authorization"
+    },
+    {
+      "name": "cms | system",
+      "description": "Private endpoint which require authorization"
+    },
+    {
+      "name": "cms | administration",
+      "description": "Private endpoint which require authorization"
+    },
+    {
+      "name": "cms | signal R",
+      "description": "Private endpoint which require authorization"
+    },
+    {
+      "name": "cms | newsletter",
+      "description": "Private endpoint which require authorization"
+    },
+    {
+      "name": "public",
+      "description": "Read-only operations that are available to everybody"
+    }
+  ],
+  "paths": {
+    "/cms/articles": {
+      "get": {
+        "tags": [
+          "cms | articles"
+        ],
+        "summary": "List all articles entries",
+        "operationId": "ListArticles",
+        "responses": {
+          "200": {
+            "description": "List of articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Article"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "cms | articles"
+        ],
+        "summary": "Add new or update an already existing article",
+        "operationId": "addUpdateArticle",
+        "requestBody": {
+          "description": "Article JSON object that will be added to the blog",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Article"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Article created/updated",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/cms/articles/{id}": {
+      "get": {
+        "tags": [
+          "cms | articles"
+        ],
+        "summary": "Get an article by id",
+        "operationId": "GetArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "cms | articles"
+        ],
+        "summary": "Mark an article as deleted by id",
+        "operationId": "DeleteArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article was successfully marked as deleted",
+            "content": {}
+          },
+          "204": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "cms | articles"
+        ],
+        "summary": "Publish or unpublish an article",
+        "operationId": "PublishUnPublishArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article was published/unpublished",
+            "content": {}
+          },
+          "204": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/articles/deleted": {
+      "get": {
+        "tags": [
+          "cms | articles"
+        ],
+        "summary": "List all deleted articles",
+        "operationId": "listAllDeletedArticles",
+        "responses": {
+          "200": {
+            "description": "List of articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Article"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/articles/{id}/recover": {
+      "patch": {
+        "tags": [
+          "cms | articles"
+        ],
+        "summary": "Recover an deleted article by ID",
+        "operationId": "recoverDeletedArticleById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article was successfully restored",
+            "content": {}
+          },
+          "404": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/articles/{id}/permanent": {
+      "delete": {
+        "tags": [
+          "cms | articles"
+        ],
+        "summary": "Delete permanently an article by ID",
+        "description": "This operation can only be successfull if the article was previously marked as deleted using DELETE /article/{id} method",
+        "operationId": "permanentlyDeleteArticleById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article was successfully deleted",
+            "content": {}
+          },
+          "404": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/articles/{id}/content": {
+      "get": {
+        "tags": [
+          "cms | articles"
+        ],
+        "summary": "Get article html",
+        "operationId": "GetArticleHtml",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article HTML is returned",
+            "content": {}
+          },
+          "204": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/articles/{id}/{lang}/history": {
+      "get": {
+        "tags": [
+          "cms | backups"
+        ],
+        "summary": "List all article editing history",
+        "operationId": "getArticleHistory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "path",
+            "description": "article language",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of article backups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ArticleBackup"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/articles/{id}/{lang}/history/{timestamp}": {
+      "get": {
+        "tags": [
+          "cms | backups"
+        ],
+        "summary": "Retrieve article backup content",
+        "description": "Retrieve article backup content for a specific language and a specific timestamp",
+        "operationId": "getBackupArticleContentById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "path",
+            "description": "article language",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timestamp",
+            "in": "path",
+            "description": "article backup timestamp",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article HTML is returned",
+            "content": {}
+          },
+          "204": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "cms | backups"
+        ],
+        "summary": "Restore article from backup",
+        "description": "Restore article from a particular backup for a specific language",
+        "operationId": "restoreArticleToBackup",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "path",
+            "description": "article language",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "timestamp",
+            "in": "path",
+            "description": "article backup timestamp",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restored version of the article is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/files/{path}": {
+      "get": {
+        "tags": [
+          "cms | files"
+        ],
+        "summary": "Return list with the id of the uploaded files",
+        "operationId": "List files from folder",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "description": "path of the folder to be listed",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of files",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/File"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "cms | files"
+        ],
+        "summary": "Upload a file to a specific folder",
+        "operationId": "uploadFileToFolder",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "description": "path of the folder",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "File to upload": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File was successfully uploaded",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "cms | files"
+        ],
+        "summary": "Delete a file by type and name",
+        "operationId": "deleteFile",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "description": "file path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File was deleted",
+            "content": {}
+          },
+          "204": {
+            "description": "The file was not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/files": {
+      "get": {
+        "tags": [
+          "cms | files"
+        ],
+        "summary": "Return list with the id of the uploaded files within the root folder",
+        "operationId": "List files",
+        "responses": {
+          "200": {
+            "description": "List of files",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/File"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "cms | files"
+        ],
+        "summary": "Add folder",
+        "operationId": "addFolder",
+        "requestBody": {
+          "description": "Folder object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Folder"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Folder was successfully created",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      },
+      "post": {
+        "tags": [
+          "cms | files"
+        ],
+        "summary": "Upload a file",
+        "operationId": "uploadFile",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "File to upload": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "File was successfully uploaded",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/files/zip": {
+      "post": {
+        "tags": [
+          "cms | files"
+        ],
+        "summary": "Download selected files as a zip folder",
+        "description": "Provide path of the files that will be zipped. If a folder is provided, all files inside of it are also zipped and included in the final ZIP file.",
+        "operationId": "zipFiles",
+        "requestBody": {
+          "description": "file paths",
+          "content": {
+            "application/zip": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Files were successfully zipped",
+            "content": {}
+          },
+          "404": {
+            "description": "The selected files were not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/cms/deploy": {
+      "get": {
+        "tags": [
+          "cms | system"
+        ],
+        "summary": "Launch the deployment",
+        "description": "A request will be send to the Github. This request will trigger an event, which launches the deployment process",
+        "operationId": "Deploy",
+        "responses": {
+          "200": {
+            "description": "The deployment process was successfully launched",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/users": {
+      "get": {
+        "tags": [
+          "cms | administration"
+        ],
+        "summary": "List all registered users",
+        "operationId": "getUsers",
+        "responses": {
+          "200": {
+            "description": "List of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "cms | administration"
+        ],
+        "summary": "Invite user",
+        "operationId": "inviteUser",
+        "requestBody": {
+          "description": "User information that will be invited to manage the blog",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully invited",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      },
+      "patch": {
+        "tags": [
+          "cms | administration"
+        ],
+        "summary": "Edit user",
+        "operationId": "editUser",
+        "requestBody": {
+          "description": "Update user information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully updated",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/cms/users/{id}": {
+      "delete": {
+        "tags": [
+          "cms | administration"
+        ],
+        "summary": "Delete user",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "user id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully deleted",
+            "content": {}
+          },
+          "404": {
+            "description": "User not found",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/journal": {
+      "get": {
+        "tags": [
+          "cms | administration"
+        ],
+        "summary": "Retrieve users actions logs",
+        "operationId": "getJournal",
+        "responses": {
+          "200": {
+            "description": "List of journal entries",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JournalEntry"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/settings": {
+      "get": {
+        "tags": [
+          "cms | system"
+        ],
+        "summary": "Retrieve system settings",
+        "operationId": "getSettings",
+        "responses": {
+          "200": {
+            "description": "Retrieve settings",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Settings"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "cms | administration"
+        ],
+        "summary": "Update system settings",
+        "operationId": "updateSettings",
+        "requestBody": {
+          "description": "Update system settings",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSettings"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Settings successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Settings"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/cms/notifications/negotiate": {
+      "get": {
+        "tags": [
+          "cms | signal R"
+        ],
+        "summary": "Get token from Azure Signal R service",
+        "operationId": "signalRNegotiate",
+        "responses": {
+          "200": {
+            "description": "Settings successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Settings"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "cms | signal R"
+        ],
+        "summary": "Get/Refresh token from Azure Signal R service",
+        "operationId": "signalRNegotiatePost",
+        "responses": {
+          "200": {
+            "description": "Settings successfully updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Settings"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/notifications/sendMessage": {
+      "post": {
+        "tags": [
+          "cms | signal R"
+        ],
+        "summary": "Send a message to Signal R hub",
+        "operationId": "signalRSendMessage",
+        "requestBody": {
+          "description": "Signal R message",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignalRMessage"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Message successfully sent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignalRMessage"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ],
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/cms/newsletters": {
+      "get": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "List all newsletters",
+        "operationId": "ListAllNewsletters",
+        "responses": {
+          "200": {
+            "description": "A list with all newsletters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Newsletter"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "Add or update a newsletter",
+        "operationId": "AddUpdateNewsletter",
+        "requestBody": {
+          "description": "Newsletter JSON",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Newsletter"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Newsletter was successfully added/updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Newsletter"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/newsletters/{newsletterId}": {
+      "get": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "Retrieve a newsletter by ID",
+        "operationId": "GetNewsletterById",
+        "parameters": [
+          {
+            "name": "newsletterId",
+            "in": "path",
+            "description": "newsletter id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A newsletter JSON object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Newsletter"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "Delete newsletter by ID",
+        "operationId": "DeleteNewsletterById",
+        "parameters": [
+          {
+            "name": "newsletterId",
+            "in": "path",
+            "description": "newsletter id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Newsletter successfully removed",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/newsletters/{newsletterId}/content": {
+      "get": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "Retrieve newsletter content by ID",
+        "operationId": "GetNewsletterContentById",
+        "parameters": [
+          {
+            "name": "newsletterId",
+            "in": "path",
+            "description": "newsletter id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Stream",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/newsletters/{newsletterId}/send": {
+      "get": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "Send a newsletter to subscribers",
+        "operationId": "SendNewsletterToQueue",
+        "parameters": [
+          {
+            "name": "newsletterId",
+            "in": "path",
+            "description": "newsletter id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully sent to queue to be processed and then send to subscribers",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/subscribers": {
+      "get": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "List all subscribers",
+        "operationId": "ListAllSubscribers",
+        "responses": {
+          "200": {
+            "description": "List of subscribers",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NewsletterSubscriber"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/subscribers/{subscriberId}": {
+      "delete": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "Delete subscriber by ID",
+        "operationId": "RemoveSubscriber",
+        "parameters": [
+          {
+            "name": "subscriberId",
+            "in": "path",
+            "description": "subscriber id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "guid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subscriber successfully removed",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/subscription-template": {
+      "get": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "Retrieve subscription email template",
+        "operationId": "GetNewsletterSubscriptionTemplate",
+        "responses": {
+          "200": {
+            "description": "Return subscription template object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsletterSubscriptionTemplate"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "Add new, or update an existing, newsletter",
+        "operationId": "AddOrUpdateNewsletterSubscriptionTemplate",
+        "requestBody": {
+          "description": "Newsletter email template",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterSubscriptionTemplate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Subscription template was successfully added/updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsletterSubscriptionTemplate"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/cms/subscription-template/content": {
+      "get": {
+        "tags": [
+          "cms | newsletter"
+        ],
+        "summary": "Retrieve subscription email template content",
+        "operationId": "GetNewsletterContent",
+        "responses": {
+          "200": {
+            "description": "Return subscription template content as Stream",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2": [
+              "api://{apiResourceId}/api"
+            ]
+          }
+        ]
+      }
+    },
+    "/languages": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "List all available languages",
+        "operationId": "getLanguages",
+        "responses": {
+          "200": {
+            "description": "List of articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AvailableLanguages"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/languages/default": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Retrieve system's default language",
+        "operationId": "getDefaultLanguage",
+        "responses": {
+          "200": {
+            "description": "Default language",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AvailableLanguages"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "List all published articles entries",
+        "operationId": "ListPublishedArticles",
+        "responses": {
+          "200": {
+            "description": "List of articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Article"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/{id}": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get an article by id",
+        "description": "The article must be published",
+        "operationId": "GetPublicArticle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/articles/{id}/content": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get article html by id",
+        "description": "The article must be published",
+        "operationId": "GetPublicArticleHtml",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "article id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article HTML is returned",
+            "content": {}
+          },
+          "204": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/articles/title/{lang}/{title}": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get an article by title in a specific language",
+        "description": "The article must be published",
+        "operationId": "getPublishedArticleByTitle",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "path",
+            "description": "article language",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "title",
+            "in": "path",
+            "description": "article title",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article is returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/articles/title/{lang}/{title}/content": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Get article html by language and title",
+        "description": "The article must be published",
+        "operationId": "getArticleContentByTitle",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "path",
+            "description": "article language",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "title",
+            "in": "path",
+            "description": "article title",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Article HTML is returned",
+            "content": {}
+          },
+          "204": {
+            "description": "Empty content - Article was not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/files/{path}": {
+      "get": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Download file",
+        "operationId": "downloadFile",
+        "parameters": [
+          {
+            "name": "path",
+            "in": "path",
+            "description": "file path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File is returned",
+            "content": {}
+          },
+          "204": {
+            "description": "Empty content",
+            "content": {}
+          },
+          "404": {
+            "description": "File was not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/contact": {
+      "post": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Submit contact form",
+        "description": "An email will be send to you via backend, containing the message specified at this request",
+        "operationId": "SubmitContact",
+        "requestBody": {
+          "description": "Contact JSON object containing a valid email address and a non empty message",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Contact"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Form was successfully submited",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/newsletter": {
+      "post": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Subscribe to the newsletter",
+        "description": "Subscribe to the newsletter in a specific language by providing an email address",
+        "operationId": "subscribeToNewsletter",
+        "requestBody": {
+          "description": "NewsletterSubscriber JSON object, containing a valid email address",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterSubscriberDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully subscribed",
+            "content": {}
+          },
+          "x-codegen-request-body-name": "body"
+        }
+      }
+    },
+    "/newsletter/confirm": {
+      "post": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Confirm subscription",
+        "description": "Confirm subscription to the newsletter by using a special token",
+        "operationId": "confirmNewsletterEmail",
+        "requestBody": {
+          "description": "NewsletterSubscriber JSON object, containing a valid email address",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterSubscriberWithToken"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully subscribed",
+            "content": {}
+          },
+          "x-codegen-request-body-name": "body"
+        }
+      }
+    },
+    "/newsletter/unsubscribe": {
+      "post": {
+        "tags": [
+          "public"
+        ],
+        "summary": "Cancel newsletter subscription.",
+        "description": "Cancel newsletter subscription by providing a special token and email",
+        "operationId": "unsubscribeNewsletter",
+        "requestBody": {
+          "description": "NewsletterSubscriber JSON object, containing a personalToken and a valid email address",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsletterSubscriberWithToken"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully subscribed",
+            "content": {}
+          },
+          "x-codegen-request-body-name": "body"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AvailableLanguages": {
+        "type": "string",
+        "enum": [
+          "en",
+          "pt",
+          "ru"
+        ]
+      },
+      "LanguageDictionary": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "$ref": "#/components/schemas/AvailableLanguages"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "FileType": {
+        "type": "string",
+        "enum": [
+          "image",
+          "video",
+          "audio",
+          "pdf",
+          "binary",
+          "folder"
+        ]
+      },
+      "Role": {
+        "type": "string",
+        "enum": [
+          "administrator",
+          "editor",
+          "viewer"
+        ]
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "language": {
+            "$ref": "#/components/schemas/AvailableLanguages"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Article": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "name": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          },
+          "nameNoDiacritics": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          },
+          "author": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "Article"
+            ]
+          },
+          "publishDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "timeStamp": {
+            "type": "string",
+            "format": "date"
+          },
+          "isPublished": {
+            "type": "boolean",
+            "default": false
+          },
+          "description": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          },
+          "htmlContent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "The url can be external as well. Just remember to add the domain to the CSP (Content Security Policy)",
+            "format": "https://localhost/image123.png"
+          },
+          "imageDescription": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "markedAsDeleted": {
+            "type": "boolean",
+            "default": false
+          },
+          "markedAsDeletedDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "htmlContentIsLoaded": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "name": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string",
+            "format": "url"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ArticleBackup": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "modificationDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "name": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date"
+          },
+          "description": {
+            "type": "string"
+          },
+          "imageUrl": {
+            "type": "string",
+            "format": "url"
+          },
+          "imageDescription": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "modifiedBy": {
+            "type": "string"
+          },
+          "author": {
+            "type": "string"
+          }
+        }
+      },
+      "File": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "blobId"
+          },
+          "name": {
+            "type": "string"
+          },
+          "fileType": {
+            "$ref": "#/components/schemas/FileType"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date"
+          },
+          "size": {
+            "type": "integer"
+          }
+        }
+      },
+      "Folder": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "parentFolder": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        }
+      },
+      "JournalEntry": {
+        "type": "object",
+        "properties": {
+          "userEmail": {
+            "type": "string",
+            "format": "email"
+          },
+          "userId": {
+            "type": "string",
+            "format": "guid"
+          },
+          "description": {
+            "type": "string"
+          },
+          "timeStamp": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "Settings": {
+        "type": "object",
+        "properties": {
+          "languages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailableLanguages"
+            }
+          },
+          "defaultLanguage": {
+            "$ref": "#/components/schemas/AvailableLanguages"
+          },
+          "lastDeploymentDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "requiresDeployment": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UpdateSettings": {
+        "type": "object",
+        "properties": {
+          "languages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AvailableLanguages"
+            }
+          },
+          "defaultLanguage": {
+            "$ref": "#/components/schemas/AvailableLanguages"
+          }
+        }
+      },
+      "NewsletterSubscriber": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "emailAddress": {
+            "type": "string",
+            "format": "email"
+          },
+          "language": {
+            "$ref": "#/components/schemas/AvailableLanguages"
+          },
+          "personalToken": {
+            "type": "string"
+          },
+          "subscriptionDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "confirmed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "NewsletterSubscriberWithToken": {
+        "type": "object",
+        "properties": {
+          "emailAddress": {
+            "type": "string",
+            "format": "email"
+          },
+          "personalToken": {
+            "type": "string"
+          }
+        }
+      },
+      "NewsletterSubscriberDto": {
+        "type": "object",
+        "properties": {
+          "emailAddress": {
+            "type": "string",
+            "format": "email"
+          },
+          "language": {
+            "$ref": "#/components/schemas/AvailableLanguages"
+          }
+        }
+      },
+      "NewsletterSubscriptionTemplate": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          },
+          "author": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          },
+          "timeStamp": {
+            "type": "string",
+            "format": "date"
+          },
+          "htmlContent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          }
+        }
+      },
+      "Newsletter": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "name": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          },
+          "author": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          },
+          "timeStamp": {
+            "type": "string",
+            "format": "date"
+          },
+          "sendDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "htmlContent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LanguageDictionary"
+            }
+          }
+        }
+      },
+      "SignalRMessage": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string"
+          },
+          "page": {
+            "type": "string"
+          },
+          "payload": {
+            "type": "string",
+            "format": "json"
+          },
+          "randomId": {
+            "type": "string",
+            "format": "guid"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "OAuth2": {
+        "type": "oauth2",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://login.microsoftonline.com/{tenantId}/oauth2/v2.0/authorize",
+            "scopes": {
+              "api://{apiResourceId}/api": "Grants access to api"
+            }
+          }
+        }
+      }
+    }
+  }
+}
