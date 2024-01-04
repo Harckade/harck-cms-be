@@ -1403,101 +1403,101 @@ While you are on your Harckade's `API Managed service`, navigate to `APIs` and a
                     &lt;choose&gt;
                         &lt;when condition="@(context.Request.Url.Path.StartsWith("/files") || context.Request.Url.Path.StartsWith("files"))">
                             &lt;set-backend-service backend-id="harck-{project name}-pub-files" />
-                        </when&gt;
+                        &lt;/when&gt;
                         &lt;when condition="@(context.Request.Url.Path.StartsWith("/cms/users") || context.Request.Url.Path.StartsWith("/cms/settings") || context.Request.Url.Path.StartsWith("/cms/journal") || context.Request.Url.Path.StartsWith("/languages") || context.Request.Url.Path.StartsWith("cms/users") || context.Request.Url.Path.StartsWith("cms/settings") || context.Request.Url.Path.StartsWith("cms/journal") || context.Request.Url.Path.StartsWith("languages"))">
                             &lt;set-backend-service backend-id="harck-{project name}-admin" />
-                        </when&gt;
+                        &lt;/when&gt;
                         &lt;when condition="@(context.Request.Url.Path.StartsWith("/cms/zip-files") || context.Request.Url.Path.StartsWith("/cms/articles") || context.Request.Url.Path.StartsWith("/cms/files") || context.Request.Url.Path.StartsWith("/robots") || context.Request.Url.Path.StartsWith("/cms/deploy") || context.Request.Url.Path.StartsWith("cms/zip-files") || context.Request.Url.Path.StartsWith("cms/articles") || context.Request.Url.Path.StartsWith("cms/files") || context.Request.Url.Path.StartsWith("robots") || context.Request.Url.Path.StartsWith("cms/deploy"))">
                             &lt;set-backend-service backend-id="harck-{project name}-private" />
-                        </when&gt;
+                        &lt;/when&gt;
                         &lt;when condition="@(context.Request.Url.Path.StartsWith("/articles") || context.Request.Url.Path.StartsWith("articles"))">
                             &lt;set-backend-service backend-id="harck-{project name}-pub-art" />
-                        </when&gt;
+                        &lt;/when&gt;
                         &lt;when condition="@(context.Request.Url.Path.StartsWith("/contact") || context.Request.Url.Path.StartsWith("contact"))">
                             &lt;set-backend-service backend-id="harck-{project name}-pub-cnt" />
-                        </when&gt;
+                        &lt;/when&gt;
                         &lt;when condition="@(context.Request.Url.Path.StartsWith("/newsletter") || context.Request.Url.Path.StartsWith("newsletter"))">
                             &lt;set-backend-service backend-id="harck-{project name}-pub-newsletter" />
-                        </when&gt;
+                        &lt;/when&gt;
                         &lt;when condition="@(context.Request.Url.Path.StartsWith("/cms/newsletter") || context.Request.Url.Path.StartsWith("/cms/subscribers") || context.Request.Url.Path.StartsWith("/cms/subscription-template") || context.Request.Url.Path.StartsWith("cms/newsletter") || context.Request.Url.Path.StartsWith("cms/subscribers") || context.Request.Url.Path.StartsWith("cms/subscription-template"))">
                             &lt;set-backend-service backend-id="harck-{project name}-private-newsletter" />
-                        </when&gt;
+                        &lt;/when&gt;
                         &lt;when condition="@(context.Request.Url.Path.StartsWith("/cms/notifications") || context.Request.Url.Path.StartsWith("cms/notifications"))">
                             &lt;set-backend-service backend-id="harck-{project name}-signal" />
-                        </when&gt;
-                        <!-- default condition -->
+                        &lt;/when&gt;
+                        &lt;!-- default condition -->
                         &lt;otherwise&gt;
                             &lt;return-response&gt;
                                 &lt;set-status code="404" reason="Not Found" />
-                            </return-response&gt;
-                        </otherwise&gt;
-                    </choose&gt;
+                            &lt;/return-response&gt;
+                        &lt;/otherwise&gt;
+                    &lt;/choose&gt;
                     &lt;cors allow-credentials="true">
                         &lt;allowed-origins&gt;
-                            &lt;origin&gt;https://{YOUR_FRONTEND_URL}.azurestaticapps.net</origin&gt;
-                        </allowed-origins&gt;
+                            &lt;origin&gt;https://{YOUR_FRONTEND_URL}.azurestaticapps.net&lt;/origin&gt;
+                        &lt;/allowed-origins&gt;
                         &lt;allowed-methods&gt;
-                            &lt;method&gt;GET</method&gt;
-                            &lt;method&gt;POST</method&gt;
-                            &lt;method&gt;OPTIONS</method&gt;
-                            &lt;method&gt;PUT</method&gt;
-                            &lt;method&gt;PATCH</method&gt;
-                            &lt;method&gt;DELETE</method&gt;
-                        </allowed-methods&gt;
+                            &lt;method&gt;GET&lt;/method&gt;
+                            &lt;method&gt;POST&lt;/method&gt;
+                            &lt;method&gt;OPTIONS&lt;/method&gt;
+                            &lt;method&gt;PUT&lt;/method&gt;
+                            &lt;method&gt;PATCH&lt;/method&gt;
+                            &lt;method&gt;DELETE&lt;/method&gt;
+                        &lt;/allowed-methods&gt;
                         &lt;allowed-headers&gt;
-                            &lt;header>*</header&gt;
-                        </allowed-headers&gt;
+                            &lt;header>*&lt;/header&gt;
+                        &lt;/allowed-headers&gt;
                         &lt;expose-headers&gt;
-                            &lt;header>*</header&gt;
-                        </expose-headers&gt;
-                    </cors&gt;
-                </inbound&gt;
+                            &lt;header>*&lt;/header&gt;
+                        &lt;/expose-headers&gt;
+                    &lt;/cors&gt;
+                &lt;/inbound&gt;
                 &lt;backend&gt;
                     &lt;base />
-                </backend&gt;
+                &lt;/backend&gt;
                 &lt;outbound&gt;
                     &lt;base />
                     &lt;set-header name="Cache-Control" exists-action="override">
                         &lt;value>@{
                             return context.Response.Headers.GetValueOrDefault("Cache-Control", "");
-                        }</value&gt;
-                    </set-header&gt;
+                        }&lt;/value&gt;
+                    &lt;/set-header&gt;
                     &lt;set-header name="Date" exists-action="override">
                         &lt;value>@{
                             return context.Response.Headers.GetValueOrDefault("Date", "");
-                        }</value&gt;
-                    </set-header&gt;
+                        }&lt;/value&gt;
+                    &lt;/set-header&gt;
                     &lt;set-header name="Expires" exists-action="override">
                         &lt;value>@{
                             return context.Response.Headers.GetValueOrDefault("Expires", "");
-                        }</value&gt;
-                    </set-header&gt;
+                        }&lt;/value&gt;
+                    &lt;/set-header&gt;
                     &lt;set-header name="Request-Context" exists-action="override">
                         &lt;value>@{
                             return context.Response.Headers.GetValueOrDefault("Request-Context", "");
-                        }</value&gt;
-                    </set-header&gt;
+                        }&lt;/value&gt;
+                    &lt;/set-header&gt;
                     &lt;set-header name="Server" exists-action="override">
                         &lt;value>@{
                             return "Harckade";
-                        }</value&gt;
-                    </set-header&gt;
+                        }&lt;/value&gt;
+                    &lt;/set-header&gt;
                     &lt;set-header name="Content-Type" exists-action="override">
                         &lt;value>@{
                             return context.Response.Headers.GetValueOrDefault("Content-Type", "");
-                        }</value&gt;
-                    </set-header&gt;
-                    <!-- Retry Policy -->
+                        }&lt;/value&gt;
+                    &lt;/set-header&gt;
+                    &lt;!-- Retry Policy -->
                     &lt;retry condition="@(context.Response.StatusCode == 503 || context.Response.StatusCode == 500)" count="3" interval="10" max-interval="30" delta="1" first-fast-retry="true">
                         &lt;set-header name="Retry-After" exists-action="override">
-                            &lt;value&gt;10</value&gt;
-                        </set-header&gt;
-                    </retry&gt;
-                </outbound&gt;
+                            &lt;value&gt;10&lt;/value&gt;
+                        &lt;/set-header&gt;
+                    &lt;/retry&gt;
+                &lt;/outbound&gt;
                 &lt;on-error&gt;
                     &lt;base />
-                </on-error&gt;
-            </policies&gt;
+                &lt;/on-error&gt;
+            &lt;/policies&gt;
         </pre>
     </details>
 
