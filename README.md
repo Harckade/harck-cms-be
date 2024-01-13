@@ -415,7 +415,12 @@ Go to [Azure portal](https://portal.azure.com/#home) and create a new `Function 
                             "name": "SmtpUsername",
                             "value": "{aws-ses-smtp-username}",
                             "slotSetting": false
-                        }
+                        },
+						{
+							"name": "RedirectUrl",
+							"value": "https://www.harckade.com",
+							"slotSetting": false
+						}
                         </pre>
                     </details>
                    <details>
