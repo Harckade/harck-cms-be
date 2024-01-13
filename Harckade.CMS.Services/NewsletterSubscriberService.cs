@@ -73,7 +73,8 @@ namespace Harckade.CMS.Services
                 EmailAddress = email,
                 PersonalToken = subscriber.PersonalToken
             }));
-            var confirmationUrl = $"{_configuration["RedirectUrl"]}/{language}/confirm?token={Convert.ToBase64String(plainTextBytes)}";
+            var languageAsString = $"{language}".ToLower();
+            var confirmationUrl = $"{_configuration["RedirectUrl"]}/{languageAsString}/confirm?token={Convert.ToBase64String(plainTextBytes)}";
 
             if (string.IsNullOrWhiteSpace(emailContent))
             {
