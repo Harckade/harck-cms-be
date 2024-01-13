@@ -21,7 +21,7 @@ namespace Harckade.CMS.Azure.Repository
         {
             try
             {
-                var result = await _tableClient.GetEntityAsync<NewsletterSubscriptionTemplateEntity>($"0", "0");
+                var result = await _tableClient.GetEntityAsync<NewsletterSubscriptionTemplateEntity>("0", "0");
                 return _mapper.EntityToDomain(result);
             }
             catch (Exception e)

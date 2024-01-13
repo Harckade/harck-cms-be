@@ -16,7 +16,7 @@ namespace Harckade.CMS.Azure.Domain
 
         private void setNewsletterSubscriptionTemplate(Dictionary<Language, string> subject, Dictionary<Language, string> author)
         {
-            Dictionary<Language, string> _Subject = new Dictionary<Language, string>();
+            Dictionary<Language, string> _subject = new Dictionary<Language, string>();
             Dictionary<Language, string> _author = new Dictionary<Language, string>();
 
             foreach (Language lang in Enum.GetValues(typeof(Language)))
@@ -25,9 +25,11 @@ namespace Harckade.CMS.Azure.Domain
                 {
                     continue;
                 }
-                _Subject.Add(lang, subject == null || !subject.ContainsKey(lang) ? string.Empty : subject[lang]);
+                _subject.Add(lang, subject == null || !subject.ContainsKey(lang) ? string.Empty : subject[lang]);
                 _author.Add(lang, author == null || !author.ContainsKey(lang) ? string.Empty : author[lang]);
             }
+            _Subject = _subject;
+            _Author = _author;
         }
 
         public NewsletterSubscriptionTemplate(NewsletterSubscriptionTemplateEntity subscriptionTemplate)
