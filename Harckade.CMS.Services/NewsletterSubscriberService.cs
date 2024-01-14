@@ -73,8 +73,9 @@ namespace Harckade.CMS.Services
                 EmailAddress = email,
                 PersonalToken = subscriber.PersonalToken
             }));
-            var languageAsString = $"{language}".ToLower();
-            var confirmationUrl = $"{_configuration["RedirectUrl"]}/{languageAsString}/confirm?token={Convert.ToBase64String(plainTextBytes)}";
+            var languageWithCamelCase = $"{language}";
+            languageWithCamelCase = Char.ToLowerInvariant(languageWithCamelCase[0]) + languageWithCamelCase.Substring(1);
+            var confirmationUrl = $"{_configuration["RedirectUrl"]}/{languageWithCamelCase}/confirm?token={Convert.ToBase64String(plainTextBytes)}";
 
             if (string.IsNullOrWhiteSpace(emailContent))
             {

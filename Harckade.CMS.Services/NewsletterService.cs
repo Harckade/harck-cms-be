@@ -159,9 +159,11 @@ namespace Harckade.CMS.Services
                 languageWithCamelCase = Char.ToLowerInvariant(languageWithCamelCase[0]) + languageWithCamelCase.Substring(1);
                 var unsubscribeUrl = $"{_configuration["RedirectUrl"]}/{languageWithCamelCase}/unsubscribe?token={Convert.ToBase64String(plainTextBytes)}";
 
-                var replacementList = new Dictionary<string, string>();
-                replacementList.Add("{{email}}", subscriber.Value.EmailAddress);
-                replacementList.Add("{{unsubscribeUrl}}", $"{unsubscribeUrl}");
+                var replacementList = new Dictionary<string, string>
+                {
+                    { "{{email}}", subscriber.Value.EmailAddress },
+                    { "{{unsubscribeUrl}}", $"{unsubscribeUrl}" }
+                };
 
                 await SendNewsletter(newsletter.NewsletterId, newsletter.Language, subscriber.Value.EmailAddress, replacementList);
             }
