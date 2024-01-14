@@ -193,7 +193,46 @@ Go to [Azure portal](https://portal.azure.com/#home) and create a new `Function 
                     <details>
                         <summary>harck-{project name}-newsletter</summary>
                         <pre>
-                        No need to edit
+                        {
+                            "name": "RedirectUrl",
+                            "value": "{your-blog(harckade-client)-url}",
+                            "slotSetting": false
+                        },
+                        {
+                            "name": "DefaultEmailTo",
+                            "value": "{email-where-you-will-receive-notifications}",
+                            "slotSetting": false
+                        },
+                        {
+                            "name": "EmailFrom",
+                            "value": "{email-that-your-subscribers-will-see}",
+                            "slotSetting": false
+                        },
+                        {
+                            "name": "EmailHost",
+                            "value": "email-smtp.{regiion(e.g.:eu-west-1)}.amazonaws.com",
+                            "slotSetting": false
+                        },
+                        {
+                            "name": "ConfigSet",
+                            "value": "",
+                            "slotSetting": false
+                        },
+                        {
+                            "name": "SmtpPassword",
+                            "value": "{aws-ses-password}",
+                            "slotSetting": false
+                        },
+                        {
+                            "name": "SmtpPort",
+                            "value": "587",
+                            "slotSetting": false
+                        },
+                        {
+                            "name": "SmtpUsername",
+                            "value": "{aws-ses-smtp-username}",
+                            "slotSetting": false
+                        }
                         </pre>
                     </details>
                     <details>
