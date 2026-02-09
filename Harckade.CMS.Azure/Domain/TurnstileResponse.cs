@@ -54,7 +54,7 @@ namespace Harckade.CMS.Azure.Domain
             Action = response.Action;
         }
 
-        public TrunstileResponse(string errorCode){
+        public TurnstileResponse(string errorCode){
             Success = false;
             var errorCodes = new List<string>();
             errorCodes.Add(errorCode);
