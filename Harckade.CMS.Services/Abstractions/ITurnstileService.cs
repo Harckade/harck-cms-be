@@ -14,6 +14,6 @@ namespace Harckade.CMS.Services.Abstractions
         /// <param name="remoteip">The visitor's IP address</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<TurnstileResponse> ValidateTokenAsync(string token, string remoteip = null);
+        Task<Result<TurnstileResponse>> ValidateTokenAsync(string token, string remoteip = null);
     }
 }
