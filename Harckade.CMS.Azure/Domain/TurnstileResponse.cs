@@ -17,7 +17,7 @@ namespace Harckade.CMS.Azure.Domain
     public class TurnstileResponse
     {
         public bool Success { get; private set; }
-        public DateTime ChallengeTs { get; private set; }
+        public DateTime? ChallengeTs { get; private set; }
         public string Hostname { get; private set; }
         public IList<string> ErrorCodes { get; private set; }
         public string Action { get; private set; }
