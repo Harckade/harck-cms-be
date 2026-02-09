@@ -14,13 +14,15 @@ namespace Harckade.CMS.PublicController.Email
     public class ContactControllerFunctions: BaseController
     {
         private IEmailService _emailService;
+        private ITurnstileService _turnstileService;
         private ILogger<ContactControllerFunctions> _appInsights;
         private ObservabilityId _oid;
 
-        public ContactControllerFunctions(IEmailService emailService, ILogger<ContactControllerFunctions> appInsights)
+        public ContactControllerFunctions(IEmailService emailService, ITurnstileService turnstileService, ILogger<ContactControllerFunctions> appInsights)
         {
             _oid = new ObservabilityId();
             _emailService = emailService;
+            _turnstileService = turnstileService;
             _emailService.UpdateOid(_oid);
             _appInsights = appInsights;
         }
@@ -47,6 +49,10 @@ namespace Harckade.CMS.PublicController.Email
             {
                 string body = new StreamReader(req.Body).ReadToEnd();
                 ContactDto contactForm = (ContactDto)JsonConvert.DeserializeObject<ContactDto>(body);
+                var isValidClient = await _turnstileService.ValidateTokenAsync(contactForm.Token);
+                if (!isValidClient.Success){
+                    return FailResponse(isValidClient, req);
+                }
                 var result = await _emailService.SendEmailAsync(contactForm);
                 if (result.Failed)
                 {

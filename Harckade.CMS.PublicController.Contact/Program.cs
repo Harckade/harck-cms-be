@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 var host = new HostBuilder()
    .ConfigureServices(service =>
    {
+       service.AddScoped<ITurnstileService, TurnstileService>();
        service.AddScoped<IEmailService, EmailService>();
        service.AddLogging();
    })

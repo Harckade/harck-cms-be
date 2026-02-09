@@ -21,6 +21,7 @@ namespace Harckade.CMS.Services
 
         private string _configSet = string.Empty;
         private string _from = "sender@example.com";
+        private ITurnstileService _turnstileService;
 
         /// <summary>
         /// Intialize AWS Simple Email Service client.
@@ -143,7 +144,7 @@ namespace Harckade.CMS.Services
                 return Result.Fail(Failure.EmailMessageIsEmpty);
             }
 
-            var body = @$"<html><body><p><strong>Email:</strong> ${message.Email}</p>
+            var body = @$"<html><body><p><strong>Email:</strong> {message.Email}</p>
             <p><strong>Website:</strong>{message.Website}</p>
             <p><strong>Message:</strong></p>
             <p>--------------------------</p>

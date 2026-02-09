@@ -7,5 +7,6 @@
         public string Website { set; get; }
         public string Subject { set; get; }
         public string Message { set; get; }
+        public string Token { set; get; }
     }
 }

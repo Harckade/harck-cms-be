@@ -16,14 +16,17 @@ namespace Harckade.CMS.PublicController.Newsletter
     {
         private INewsletterSubscriberService _newsletterSubscriberService;
         private ILogger<PublicNewsletterControllerFunctions> _appInsights;
+        private ITurnstileService _turnstileService;
         private ObservabilityId _oid;
 
-        public PublicNewsletterControllerFunctions(INewsletterSubscriberService newsletterSubscriberService, ILogger<PublicNewsletterControllerFunctions> appInsights)
+        public PublicNewsletterControllerFunctions(INewsletterSubscriberService newsletterSubscriberService, ITurnstileService turnstileService, ILogger<PublicNewsletterControllerFunctions> appInsights)
         {
             _oid = new ObservabilityId();
             _newsletterSubscriberService = newsletterSubscriberService;
+            _turnstileService = turnstileService;
             _newsletterSubscriberService.UpdateOid(_oid);
             _appInsights = appInsights;
+            
         }
 
         private async Task<HttpResponseData> ExecuteMethod(Func<Task<HttpResponseData>> func)
@@ -60,6 +63,11 @@ namespace Harckade.CMS.PublicController.Newsletter
                 if (language == default)
                 {
                     return req.CreateResponse(HttpStatusCode.BadRequest);
+                }
+
+                var isValidClient = await _turnstileService.ValidateTokenAsync(subscriber.Token);
+                if (!isValidClient.Success){
+                    return FailResponse(isValidClient, req);
                 }
 
                 var result = await _newsletterSubscriberService.AddSubscriber(subscriber.EmailAddress, language);

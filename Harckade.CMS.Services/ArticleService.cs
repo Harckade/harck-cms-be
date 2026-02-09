@@ -510,7 +510,7 @@ namespace Harckade.CMS.Services
         {
             _appInsights.LogInformation($"ArticleService | LaunchDeployment", _oid);
             var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("Harck-CMS", "1.0"));
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("Harck-CMS", "1.1"));
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Token", _configuration["GIT_TOKEN"]);
 
