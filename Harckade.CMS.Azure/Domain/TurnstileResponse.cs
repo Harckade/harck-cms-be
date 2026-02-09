@@ -22,15 +22,11 @@ namespace Harckade.CMS.Azure.Domain
         public IList<string> ErrorCodes { get; private set; }
         public string Action { get; private set; }
 
-        private bool isNullDate(DateTime date)
-        {
-            return date == default || date == new DateTime(1601, 1, 1);
-        }
-
         public TurnstileResponse(TurnstileResponseDto response){
             Success = response.Success;
-            if (isNullDate(response.ChallengeTs)){
-                 throw new ArgumentException(nameof(response.ChallengeTs));
+            if (!response.ChallengeTs.HasValue || response.ChallengeTs.Value == default || response.ChallengeTs.Value == new DateTime(1601, 1, 1))
+            {
+                throw new ArgumentException(nameof(response.ChallengeTs));
             }
             ChallengeTs = response.ChallengeTs;
             if (response.Hostname.Length > 100){
