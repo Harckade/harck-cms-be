@@ -10,6 +10,6 @@ namespace Harckade.CMS.Azure.Dtos
         public string PersonalToken { get; set; }
         public DateTime SubscriptionDate { get; set; }
         public bool Confirmed { get; set; }
-        public bool Token {get; set;}
+        public string Token {get; set;}
     }
 }
