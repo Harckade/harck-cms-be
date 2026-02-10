@@ -55,6 +55,7 @@ namespace Harckade.CMS.Azure.Domain
             var errorCodes = new List<string>();
             errorCodes.Add(errorCode);
             ErrorCodes = errorCodes;
+            Hostname = string.Empty;
         }
     }
 }

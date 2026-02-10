@@ -27,6 +27,7 @@
         NewsletterNotFound,
         NewsletterAlreadySent,
         UnsubscribeUrlIsMissing,
-        ConfirmationUrlIsMissing
+        ConfirmationUrlIsMissing,
+        CloudflareValidationFailed
     }
 }

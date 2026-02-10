@@ -5,7 +5,6 @@ using Harckade.CMS.Services.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.Net;
 
 namespace Harckade.CMS.Services
 {
@@ -31,6 +30,7 @@ namespace Harckade.CMS.Services
 
         public async Task<Result<TurnstileResponse>> ValidateTokenAsync(string token, string remoteip = null)
         {
+            _appInsights.LogInformation($"ValidateTokenAsync", _oid);
             var parameters = new Dictionary<string, string>
             {
                 { "secret", _secretKey },
@@ -50,11 +50,16 @@ namespace Harckade.CMS.Services
                 httpClient.DefaultRequestHeaders.UserAgent.Add(new System.Net.Http.Headers.ProductInfoHeaderValue("Harck-CMS", "1.1"));
                 var response = await httpClient.PostAsync(_siteverifyUrl, postContent);
                 var stringContent = await response.Content.ReadAsStringAsync();
-                return Result.Ok<TurnstileResponse>(TurnstileResponse(JsonConvert.DeserializeObject<TurnstileResponseDto>(stringContent)));
+                if (string.IsNullOrWhiteSpace(stringContent))
+                {
+                    _appInsights.LogError($"Cloudflare returned empty response", _oid);
+                    return Result.Fail<TurnstileResponse>(Failure.CloudflareValidationFailed, "Cloudflare validation resuturned empty response");
+                }
+                return Result.Ok<TurnstileResponse>(new TurnstileResponse(JsonConvert.DeserializeObject<TurnstileResponseDto>(stringContent)));
             }
             catch (Exception ex)
             {
-                return Result.Fail<Article>(new TurnstileResponse("internal-error"));
+                return Result.Fail<TurnstileResponse>(Failure.CloudflareValidationFailed, "Cloudflare validation failed");
             }
         }
 
