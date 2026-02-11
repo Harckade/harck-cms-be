@@ -20,6 +20,7 @@ var host = new HostBuilder()
           service.AddSingleton(queueClient);
           service.AddScoped<IBlobRepository, BlobRepository>(s => new BlobRepository(connectionString));
           service.AddScoped<ISettingsRepository, SettingsRepository>();
+          service.AddScoped<ITurnstileService, TurnstileService>();
           service.AddScoped<INewsletterSubscriptionTemplateRepository, NewsletterSubscriptionTemplateRepository>();
           service.AddScoped<INewsletterSubscriptionTemplateService, NewsletterSubscriptionTemplateService>();
           service.AddScoped<INewsletterSubscriberRepository, NewsletterSubscriberRepository>();

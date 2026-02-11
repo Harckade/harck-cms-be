@@ -24,7 +24,7 @@ namespace Harckade.CMS.Azure.Domain
 
         public TurnstileResponse(TurnstileResponseDto response){
             Success = response.Success;
-            if (!response.ChallengeTs.HasValue || response.ChallengeTs.Value == default || response.ChallengeTs.Value == new DateTime(1601, 1, 1))
+            if (response.ChallengeTs != null && (!response.ChallengeTs.HasValue || response.ChallengeTs.Value == default || response.ChallengeTs.Value == new DateTime(1601, 1, 1)))
             {
                 throw new ArgumentException(nameof(response.ChallengeTs));
             }
@@ -44,7 +44,7 @@ namespace Harckade.CMS.Azure.Domain
                 }
             }
             ErrorCodes = errorCodes;
-            if (string.IsNullOrWhiteSpace(response.Action) || response.Action.Length > 100){
+            if (!string.IsNullOrWhiteSpace(response.Action) && response.Action.Length > 100){
                 throw new ArgumentException(nameof(response.Action));
             }
             Action = response.Action;
